@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#6556d9">
+<title>Little Quest</title>
+<style>
+:root{--purple:#6556d9;--pink:#ff8fb8;--gold:#ffbd36;--ink:#30265d;--bg:#f4f2ff}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#dff3ff,#f7efff 55%,#fff4e8);color:var(--ink)}
+.app{max-width:480px;margin:auto;min-height:100dvh;padding:14px 14px 92px}
+header{display:flex;align-items:center;justify-content:space-between;padding:8px 4px 16px}
+.logo{font-weight:900;font-size:25px;color:#5141bd;text-shadow:0 2px #fff}.coins{background:#fff;border:2px solid #ffe08a;border-radius:24px;padding:8px 13px;font-weight:800;box-shadow:0 4px 0 #f5d36d}
+.hero{border-radius:25px;padding:20px;text-align:center;background:linear-gradient(145deg,#6c62e9,#a18bff 60%,#f6a6d3);color:white;box-shadow:0 8px 18px #6d59bb33;position:relative;overflow:hidden}
+.hero h1{margin:0;font-size:24px}.hero p{margin:6px 0 0;font-size:13px}.pet{font-size:92px;line-height:1.25;filter:drop-shadow(0 6px 4px #44309a35);margin:4px}.petname{font-size:18px;font-weight:800}.progress{height:10px;background:#ffffff66;border-radius:99px;margin:10px auto 0;max-width:230px;overflow:hidden}.progress span{display:block;height:100%;background:#ffdf59;border-radius:99px;width:35%}
+.tabs{display:flex;gap:7px;margin:14px 0}.tab{flex:1;border:0;border-radius:15px;padding:11px 5px;background:#fff9;color:#5141bd;font-weight:800}.tab.active{background:#fff;box-shadow:0 4px 0 #d8d0ff}
+.card{background:#ffffffdf;border:1px solid #fff;border-radius:21px;padding:16px;margin:12px 0;box-shadow:0 5px 15px #6556d915}
+h2{font-size:17px;margin:0 0 12px}.task{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #eee9ff}.task:last-child{border:0}.task .emoji{font-size:25px}.task .desc{flex:1;font-weight:700;font-size:14px}.task small{display:block;color:#8b82b8;font-weight:500;margin-top:3px}.reward{color:#c18a00;font-weight:900;white-space:nowrap}.done{border:0;border-radius:12px;background:#e7e2ff;color:#5849c8;padding:9px 12px;font-weight:800}.done:disabled{background:#dff6e8;color:#248b5b}
+.shopgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.rewardbox{text-align:center;background:#fff;border-radius:16px;padding:13px 8px;border:1px solid #eee7ff}.rewardbox .big{font-size:35px}.rewardbox strong{display:block;font-size:13px;margin:5px}.buy{border:0;background:#ffcf57;border-radius:12px;padding:8px 12px;font-weight:900;color:#624300}
+.worldgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.place{padding:16px 8px;border-radius:17px;text-align:center;background:linear-gradient(145deg,#e6f6ff,#fff);font-weight:800}.place span{font-size:34px;display:block}.place small{color:#8a80b5}
+input,select{width:100%;padding:12px;border:1px solid #ddd5ff;border-radius:12px;margin:6px 0;font:inherit}.primary{width:100%;border:0;border-radius:14px;background:#6556d9;color:#fff;font-weight:900;padding:13px;margin-top:6px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(12px);display:flex;justify-content:center;padding:9px max(8px,env(safe-area-inset-right)) calc(9px + env(safe-area-inset-bottom));border-top:1px solid #e8e1ff;z-index:5}nav button{flex:1;max-width:115px;border:0;background:none;color:#8279ac;font-weight:800;font-size:12px;padding:6px}nav button span{display:block;font-size:22px;margin-bottom:2px}nav button.active{color:#5141bd}
+.note{font-size:12px;color:#887fae;line-height:1.5}.hidden{display:none!important}
+</style></head>
+<body><div class="app">
+<header><div class="logo">✨ Little Quest</div><div class="coins">🪙 <b id="coins">125</b></div></header>
+<section id="home">
+<div class="hero"><h1>香港冒險基地</h1><p>完成任務，陪伴神話夥伴一起成長！</p><div class="pet" id="heroPet">🐉</div><div class="petname" id="heroName">小龍 · Lv.1</div><div class="progress"><span id="xpbar"></span></div><p id="xptext">35 / 100 XP</p></div>
+<div class="tabs"><button class="tab active" onclick="child('Sophie',this)">👧 Sophie</button><button class="tab" onclick="child('Emily',this)">👧 Emily</button></div>
+<div class="card"><h2>📅 今日任務</h2><div id="tasks"></div></div>
+<div class="card"><h2>🌟 今日小目標</h2><p id="encourage">每完成一件小事，世界就亮起一顆星！</p></div>
+</section>
+<section id="petpage" class="hidden"><div class="hero"><h1>我的神話夥伴</h1><div class="pet" id="petBig">🐉</div><div class="petname" id="petTitle">天空神龍</div><p>完成任務，累積 XP，解鎖新形態！</p><div class="progress"><span id="petbar"></span></div><p id="petxp"></p></div><div class="card"><h2>🧡 寵物照顧</h2><p>餵食、玩耍和裝扮都可以在這裡進行。寵物不會死亡，只會期待你回來！</p><div class="shopgrid"><div class="rewardbox"><div class="big">🍎</div><strong>餵食寵物</strong><button class="buy" onclick="care('feed')">使用 5 金幣</button></div><div class="rewardbox"><div class="big">🎾</div><strong>一起玩耍</strong><button class="buy" onclick="care('play')">使用 5 金幣</button></div></div></div></section>
+<section id="world" class="hidden"><div class="card"><h2>🗺️ 冒險世界</h2><p>從香港出發，一步步探索世界與宇宙！</p><div class="worldgrid"><div class="place">🏙️<span>🇭🇰</span>香港<small>起點 · 已開啟</small></div><div class="place">🗻<span>🗾</span>日本<small>完成 5 個任務解鎖</small></div><div class="place">🏰<span>🇪🇺</span>歐洲<small>完成 15 個任務解鎖</small></div><div class="place">🚀<span>🌌</span>宇宙<small>寵物 Lv.10 解鎖</small></div><div class="place">🧜‍♀️<span>🫧</span>海底王國<small>探索中</small></div><div class="place">🦄<span>✨</span>幻想之境<small>神秘入口</small></div></div></div></section>
+<section id="shop" class="hidden"><div class="card"><h2>🎁 獎勵商店</h2><p>用金幣兌換由家長設定的真實獎勵。</p><div class="shopgrid"><div class="rewardbox"><div class="big">🍦</div><strong>雪糕</strong><button class="buy" onclick="redeem(50,'雪糕')">50 🪙</button></div><div class="rewardbox"><div class="big">🎬</div><strong>電影時間</strong><button class="buy" onclick="redeem(100,'電影時間')">100 🪙</button></div><div class="rewardbox"><div class="big">🧸</div><strong>小玩具</strong><button class="buy" onclick="redeem(250,'小玩具')">250 🪙</button></div><div class="rewardbox"><div class="big">🎮</div><strong>遊戲時間 30 分鐘</strong><button class="buy" onclick="redeem(150,'遊戲時間')">150 🪙</button></div></div></div></section>
+<section id="parent" class="hidden"><div class="card"><h2>🔐 家長控制台</h2><p class="note">原型模式：任務及金幣資料保存在此裝置的瀏覽器。</p><h2>新增任務</h2><input id="newtask" placeholder="例如：收拾書包"><input id="newcoin" type="number" placeholder="金幣獎勵（例如 10）" value="10"><button class="primary" onclick="addTask()">＋ 新增任務</button><h2 style="margin-top:20px">每週目標</h2><p>本週完成 <b id="weekly">0</b> 個任務 🌟</p><button class="primary" onclick="resetTasks()">重設今日任務（測試用）</button></div></section>
+</div>
+<nav><button class="active" onclick="page('home',this)"><span>🏠</span>任務</button><button onclick="page('petpage',this)"><span>🐾</span>寵物</button><button onclick="page('world',this)"><span>🗺️</span>世界</button><button onclick="page('shop',this)"><span>🎁</span>商店</button><button onclick="page('parent',this)"><span>🔐</span>家長</button></nav>
+<script>
+const defaultTasks=[{name:'整理自己的房間',coin:10,emoji:'🧹'},{name:'閱讀 20 分鐘',coin:10,emoji:'📚'},{name:'幫忙準備晚餐',coin:15,emoji:'🍽️'}];
+let data=JSON.parse(localStorage.getItem('littlequest')||'null')||{coins:125,xp:35,weekly:0,child:'Sophie',tasks:defaultTasks.map(t=>({...t,done:false}))};
+function save(){localStorage.setItem('littlequest',JSON.stringify(data));render()}
+function render(){document.getElementById('coins').textContent=data.coins;document.getElementById('tasks').innerHTML=data.tasks.map((t,i)=>`<div class="task"><div class="emoji">${t.emoji||'⭐'}</div><div class="desc">${t.name}<small>${t.done?'已完成 ✨':'完成即可獲得獎勵'}</small></div><div class="reward">+${t.coin} 🪙</div><button class="done" ${t.done?'disabled':''} onclick="complete(${i})">${t.done?'✓':'完成'}</button></div>`).join('');let pct=data.xp%100;document.getElementById('xpbar').style.width=pct+'%';document.getElementById('xptext').textContent=pct+' / 100 XP';document.getElementById('petbar').style.width=pct+'%';document.getElementById('petxp').textContent=pct+' / 100 XP';document.getElementById('weekly').textContent=data.weekly;document.getElementById('heroName').textContent=(data.xp>=500?'夢幻神龍':data.xp>=200?'成長神龍':'小龍')+' · Lv.'+(1+Math.floor(data.xp/100));}
+function complete(i){if(data.tasks[i].done)return;data.tasks[i].done=true;data.coins+=Number(data.tasks[i].coin);data.xp+=20;data.weekly++;save();alert('任務完成！+'+data.tasks[i].coin+' 金幣 🥳 寵物也獲得 20 XP！')}
+function child(name,el){data.child=name;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');save()}
+function page(id,el){document.querySelectorAll('section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));el.classList.add('active')}
+function redeem(cost,name){if(data.coins<cost){alert('金幣未足夠！再完成一些任務吧 🌟');return}if(confirm('確認兌換「'+name+'」？將扣除 '+cost+' 金幣。')){data.coins-=cost;save();alert('已提交兌換：'+name+'！請找家長確認 🎁')}}
+function care(kind){if(data.coins<5){alert('金幣不足，完成任務賺取更多吧！');return}data.coins-=5;data.xp+=5;save();alert(kind==='feed'?'寵物吃得好開心！🍎':'玩得好開心！🎾')}
+function addTask(){let n=document.getElementById('newtask').value.trim(),c=Number(document.getElementById('newcoin').value);if(!n||c<=0){alert('請輸入任務及有效金幣');return}data.tasks.push({name:n,coin:c,emoji:'⭐',done:false});document.getElementById('newtask').value='';save()}
+function resetTasks(){if(confirm('重設所有任務完成狀態？')){data.tasks.forEach(t=>t.done=false);save()}}
+render();if(data.child==='Emily')document.querySelectorAll('.tab')[1].classList.add('active');
+</script></body></html>
